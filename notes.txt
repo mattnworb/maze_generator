@@ -1,0 +1,4 @@
+first version:
+
+$ python -m timeit -s "from maze_generator import MazeWalker, Maze" "MazeWalker(Maze(60, 50)).solve()"
+10 loops, best of 3: 2.9 sec per loop
