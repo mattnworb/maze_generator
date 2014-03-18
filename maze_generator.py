@@ -121,45 +121,67 @@ class MazeWalker(object):
         return len(remaining) == 0
 
     def solve(self, verbose=False):
-        # from current position, figure out what moves are possible
-        # if there are moves, pick one at random
-        # if there are no moves, go backwards one step in history
+        ## from current position, figure out what moves are possible
+        ## if there are moves, pick one at random
+        ## if there are no moves, go backwards one step in history
 
-        counter = 0
-        while not self.all_visited() and counter < 1000000:
-            if verbose:
-                print 'Round', counter
-            counter += 1
+        #counter = 0
+        #while not self.all_visited() and counter < 1000000:
+        #    if verbose:
+        #        print 'Round', counter
+        #    counter += 1
 
-            choices = set(Direction)
-            for d in Direction:
-                if not self.allowed_move(self.pos, d):
-                    choices.remove(d)
+        #    choices = set(Direction)
+        #    for d in Direction:
+        #        if not self.allowed_move(self.pos, d):
+        #            choices.remove(d)
 
-            if verbose:
-                print 'Possible moves from {0}: {1}'.format(self.pos, choices)
+        #    if verbose:
+        #        print 'Possible moves from {0}: {1}'.format(self.pos, choices)
 
-            if len(choices) > 0:
-                direction = random.choice(list(choices))
-                if verbose:
-                    print 'Moving {0} from {1}'.format(direction, self.pos)
+        #    if len(choices) > 0:
+        #        direction = random.choice(list(choices))
+        #        if verbose:
+        #            print 'Moving {0} from {1}'.format(direction, self.pos)
 
-                self.maze.knockdown_wall(self.pos, direction)
-                self.pos_history.append(self.pos)
-                self.visited_positions.add(self.pos)
+        #        self.maze.knockdown_wall(self.pos, direction)
+        #        self.pos_history.append(self.pos)
+        #        self.visited_positions.add(self.pos)
 
-                self.pos = next_pos(self.pos, direction)
-            else:
-                if verbose:
-                    print 'No moves valid from {0}, backtracking to {1}'.format(self.pos, self.pos_history[-1])
-                self.visited_positions.add(self.pos)
-                self.pos = self.pos_history[-1]
-                self.pos_history = self.pos_history[:-1]
-            if verbose:
-                print self.maze
+        #        self.pos = next_pos(self.pos, direction)
+        #    else:
+        #        if verbose:
+        #            print 'No moves valid from {0}, backtracking to {1}'.format(self.pos, self.pos_history[-1])
+        #        self.visited_positions.add(self.pos)
+        #        self.pos = self.pos_history[-1]
+        #        self.pos_history = self.pos_history[:-1]
+        #    if verbose:
+        #        print self.maze
 
-        # are we all done after the loop?
-        return (self.all_visited(), counter)
+        ## are we all done after the loop?
+        #return (self.all_visited(), counter)
+        try:
+            self.step((0, 0))
+        except RuntimeError as e:
+            print self.maze
+            print e
+
+    def step(self, pos):
+        self.visited_positions.add(pos)
+
+        choices = list(Direction)
+        random.shuffle(choices)
+
+        for direction in choices:
+            if self.allowed_move(pos, direction):
+                print 'From {0}, moving {1}'.format(pos, direction)
+
+                self.maze.knockdown_wall(pos, direction)
+                #self.pos_history.append(self.pos)
+
+                self.step(next_pos(pos, direction))
+
+         
 
 if __name__ == '__main__':
     mw = MazeWalker(Maze(60, 50))
