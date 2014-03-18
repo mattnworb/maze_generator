@@ -120,9 +120,9 @@ class MazeWalker(object):
         return len(remaining) == 0
 
     def solve(self, verbose=False):
-        ## from current position, figure out what moves are possible
-        ## if there are moves, pick one at random
-        ## if there are no moves, go backwards one step in history
+        # from current position, figure out what moves are possible
+        # if there are moves, pick one at random
+        # if there are no moves, go backwards one step in history
         history = [self.start]
         pos = self.start
         counter = 0
