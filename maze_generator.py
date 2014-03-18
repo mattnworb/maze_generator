@@ -104,9 +104,7 @@ class Maze(object):
 class MazeWalker(object):
     def __init__(self, maze, starting_position=(0, 0)):
         self.maze = maze
-        # TODO make start position an argument
         self.pos = starting_position
-        self.move_history = []
         self.pos_history = []
         self.visited_positions = set()
 
@@ -147,7 +145,6 @@ class MazeWalker(object):
                     print 'Moving {0} from {1}'.format(direction, self.pos)
 
                 self.maze.knockdown_wall(self.pos, direction)
-                self.move_history.append(direction)
                 self.pos_history.append(self.pos)
                 self.visited_positions.add(self.pos)
 
