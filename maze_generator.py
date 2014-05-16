@@ -140,7 +140,7 @@ class MazeWalker(object):
             elif len(history) > 0:
                 pos = history[-1]
                 history = history[:-1]
-            
+
         return (self.all_visited(), counter)
 
 
